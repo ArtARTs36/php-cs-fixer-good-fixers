@@ -51,7 +51,7 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
                         new Token(
                             [
                                 T_DOC_COMMENT,
-                                DocBlock::make($this->generateComment($lastString, $file))->content(),
+                                DocBlock::make()->setSummary($this->generateComment($lastString, $file))->content(),
                             ]
                         )
                     );
