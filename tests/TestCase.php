@@ -11,9 +11,9 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         $tokens = Tokens::fromCode(file_get_contents($path));
 
-       $fixer->fix(new \SplFileInfo($path), $tokens);
+        $fixer->fix(new \SplFileInfo($path), $tokens);
 
-       return $tokens->generateCode();
+        return $tokens->generateCode();
     }
 
     protected function runFixerFixTest(AbstractFixer $fixer, string $inputPath, string $compareFilePath): void

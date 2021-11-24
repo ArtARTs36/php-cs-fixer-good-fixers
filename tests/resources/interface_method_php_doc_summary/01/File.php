@@ -11,6 +11,10 @@ interface File
 
     public function delete(): void;
 
+    public function content(): string;
+
+    public function size(): int;
+
     /**
      * @param string $param
      */

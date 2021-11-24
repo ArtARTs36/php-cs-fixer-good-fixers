@@ -31,7 +31,7 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
             } elseif ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $isMethodCurrently = true;
             } elseif (
-                $lastString
+                $lastString !== null
                 && $isMethodCurrently
                 && $tokens[$index]->isGivenKind(T_PUBLIC)
             ) {
@@ -46,6 +46,10 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
 
                     $tokens[$index - 2] = new Token([T_DOC_COMMENT, $docBlock->content()]);
                 } else {
+                    if ($tokens[$index - 1]->getId() === T_WHITESPACE) {
+                        $tokens[$index - 1] = new Token([T_WHITESPACE, "\n    "]);
+                    }
+
                     $tokens->insertAt(
                         $index - 1,
                         new Token(
@@ -57,6 +61,10 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
                     );
 
                     $tokens->insertAt($index - 1, new Token([T_WHITESPACE, "\n"]));
+
+                    if ($tokens[$index - 2]->getContent() !== '{') {
+                        $tokens->insertAt($index - 1, new Token([T_WHITESPACE, "\n"]));
+                    }
 
                     $isMethodCurrently = false;
                 }
