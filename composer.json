@@ -1,0 +1,29 @@
+{
+    "name": "artem/php-cs-fixer-good-fixers",
+    "type": "library",
+    "require": {
+        "php": "^7.2 | ^8.0",
+        "friendsofphp/php-cs-fixer": "^3.3",
+        "artarts36/str": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ArtARTs36\\PhpCsFixerGoodFixers\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ArtARTs36\\PhpCsFixerGoodFixers\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ArtARTs36",
+            "email": "temicska99@mail.ru"
+        }
+    ]
+}
