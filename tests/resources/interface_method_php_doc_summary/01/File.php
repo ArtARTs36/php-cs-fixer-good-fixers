@@ -2,6 +2,9 @@
 
 interface File
 {
+    public const CONST_ONE = 1;
+    public const CONST_TWO = 2;
+
     public function find(): void;
 
     /**
