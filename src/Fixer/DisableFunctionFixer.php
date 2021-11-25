@@ -6,6 +6,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
@@ -41,8 +42,11 @@ class DisableFunctionFixer extends AbstractFixer implements ConfigurableFixerInt
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Check the use of disabled functions',
-            [],
+            'Disabled functions cannot be used ',
+            [
+                new CodeSample("<?php\n \$var = 5;\n dd(\$var);\n"),
+                new CodeSample("<?php\n \$var = 5;\n dump(\$var);\n"),
+            ],
             'Check the use of disabled functions'
         );
     }

@@ -4,6 +4,7 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
 use ArtARTs36\PhpCsFixerGoodFixers\Doc\DocBlock;
 use ArtARTs36\Str\Str;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
@@ -75,7 +76,9 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Each interface method must have a description (PHPDoc Summary)',
-            [],
+            [
+                new CodeSample("<?php\ninterface User\n{\npublic function getName();\n}"),
+            ],
             'Each interface method must have a description (PHPDoc Summary)'
         );
     }
