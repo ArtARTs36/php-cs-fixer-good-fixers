@@ -5,3 +5,4 @@ README.MD           export-ignore
 .github             export-ignore
 phpunit.xml         export-ignore
 .php-cs-fixer.php   export-ignore
+LICENSE             export-ignore
