@@ -26,7 +26,7 @@ class DocBlock
     /**
      * @param array<string>|string $lines
      */
-    public static function make($lines): self
+    public static function make($lines = []): self
     {
         $linesString = '';
 
@@ -34,7 +34,7 @@ class DocBlock
             $linesString .= "\n    * " . $line;
         }
 
-        return new self("    /**" . $linesString . "\n    */");
+        return new self("    /**" . $linesString . "\n     */");
     }
 
     public function setSummary(string $summary): self

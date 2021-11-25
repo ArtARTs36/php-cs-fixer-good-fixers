@@ -1,13 +1,14 @@
 {
-    "name": "artem/php-cs-fixer-good-fixers",
+    "name": "artarts36/php-cs-fixer-good-fixers",
+    "description": "Fixers collection for PHP Cs Fixer",
     "type": "library",
     "require": {
         "php": "^7.2 | ^8.0",
-        "friendsofphp/php-cs-fixer": "^3.3",
-        "artarts36/str": "^2.0"
+        "friendsofphp/php-cs-fixer": "^3",
+        "artarts36/str": "^2.0.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9"
     },
     "license": "MIT",
     "autoload": {
@@ -25,5 +26,13 @@
             "name": "ArtARTs36",
             "email": "temicska99@mail.ru"
         }
-    ]
+    ],
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit -v --coverage-text --colors=always --configuration phpunit.xml"
+        ],
+        "lint": [
+            "php-cs-fixer fix --dry-run --verbose --diff --ansi"
+        ]
+    }
 }

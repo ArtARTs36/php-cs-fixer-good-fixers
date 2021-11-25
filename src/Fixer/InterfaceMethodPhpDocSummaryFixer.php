@@ -4,9 +4,9 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
 use ArtARTs36\PhpCsFixerGoodFixers\Doc\DocBlock;
 use ArtARTs36\Str\Str;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,7 +31,7 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
             } elseif ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $isMethodCurrently = true;
             } elseif (
-                $lastString
+                $lastString !== null
                 && $isMethodCurrently
                 && $tokens[$index]->isGivenKind(T_PUBLIC)
             ) {
@@ -46,17 +46,25 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
 
                     $tokens[$index - 2] = new Token([T_DOC_COMMENT, $docBlock->content()]);
                 } else {
+                    if ($tokens[$index - 1]->getId() === T_WHITESPACE) {
+                        $tokens[$index - 1] = new Token([T_WHITESPACE, "\n    "]);
+                    }
+
                     $tokens->insertAt(
                         $index - 1,
                         new Token(
                             [
                                 T_DOC_COMMENT,
-                                DocBlock::make($this->generateComment($lastString, $file))->content(),
+                                DocBlock::make()->setSummary($this->generateComment($lastString, $file))->content(),
                             ]
                         )
                     );
 
                     $tokens->insertAt($index - 1, new Token([T_WHITESPACE, "\n"]));
+
+                    if ($tokens[$index - 2]->getContent() !== '{') {
+                        $tokens->insertAt($index - 1, new Token([T_WHITESPACE, "\n"]));
+                    }
 
                     $isMethodCurrently = false;
                 }
@@ -68,27 +76,11 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Each interface method must have a description (PHPDoc Summary)',
-            [],
+            [
+                new CodeSample("<?php\ninterface User\n{\npublic function getName();\n}"),
+            ],
             'Each interface method must have a description (PHPDoc Summary)'
         );
-    }
-
-    public function getName(): string
-    {
-        /** @var string $name */
-        $name = Preg::replace('/(?<!^)(?=[A-Z])/', '_', \substr(static::class, 22, -5));
-
-        return 'PhpCsFixerGoodFixers/' . \strtolower($name);
-    }
-
-    public function getPriority(): int
-    {
-        return 2;
-    }
-
-    public function supports(\SplFileInfo $file): bool
-    {
-        return true;
     }
 
     protected function generateComment(string $methodName, \SplFileInfo $file): string
