@@ -1,5 +1,5 @@
 {
-    "name": "artem/php-cs-fixer-good-fixers",
+    "name": "artarts36/php-cs-fixer-good-fixers",
     "type": "library",
     "require": {
         "php": "^7.2 | ^8.0",
