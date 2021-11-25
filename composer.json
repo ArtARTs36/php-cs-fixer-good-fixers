@@ -1,5 +1,6 @@
 {
     "name": "artarts36/php-cs-fixer-good-fixers",
+    "description": "Fixers collection for PHP Cs Fixer",
     "type": "library",
     "require": {
         "php": "^7.2 | ^8.0",
@@ -29,6 +30,9 @@
     "scripts": {
         "test": [
             "./vendor/bin/phpunit -v --coverage-text --colors=always --configuration phpunit.xml"
+        ],
+        "lint": [
+            "php-cs-fixer fix --dry-run --verbose --diff --ansi"
         ]
     }
 }
