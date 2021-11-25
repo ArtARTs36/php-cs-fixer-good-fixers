@@ -2,6 +2,10 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
@@ -9,8 +13,31 @@ use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-class DisableFunctionFixer extends AbstractFixer
+class DisableFunctionFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    protected $disableFunctions = [
+        'dd' => null,
+        'dump' => null,
+    ];
+
+    public function configure(array $configuration): void
+    {
+        if (! isset($configuration['disable_functions'])) {
+            return;
+        }
+
+        $this->disableFunctions = array_flip($configuration['disable_functions']);
+    }
+
+    public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('disable_functions', 'List of disable functions.'))
+                ->setDefault(['dd', 'dump'])
+                ->getOption(),
+        ]);
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition('', [], '');
@@ -26,7 +53,6 @@ class DisableFunctionFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $functions = array_flip(['dd', 'dump']);
         $funcAnalyzer = new FunctionsAnalyzer();
         $argsAnalyzer = new ArgumentsAnalyzer();
 
@@ -34,7 +60,7 @@ class DisableFunctionFixer extends AbstractFixer
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if (! $tokens[$index]->isGivenKind(T_STRING) ||
-                ! isset($functions[$tokens[$index]->getContent()]) ||
+                ! array_key_exists($tokens[$index]->getContent(), $this->disableFunctions) ||
                 ! $funcAnalyzer->isGlobalFunctionCall($tokens, $index)
             ) {
                 continue;
