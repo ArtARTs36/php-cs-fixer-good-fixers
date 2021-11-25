@@ -25,4 +25,15 @@ final class InterfaceMethodPhpDocSummaryFixerTest extends TestCase
     {
         $this->runFixerFixTest(new InterfaceMethodPhpDocSummaryFixer(), $inputPath, $compareFilePath);
     }
+
+    /**
+     * @covers \ArtARTs36\PhpCsFixerGoodFixers\Fixer\InterfaceMethodPhpDocSummaryFixer::getName
+     */
+    public function testGetName(): void
+    {
+        self::assertEquals(
+            'PhpCsFixerGoodFixers/interface_method_php_doc_summary',
+            (new InterfaceMethodPhpDocSummaryFixer())->getName()
+        );
+    }
 }

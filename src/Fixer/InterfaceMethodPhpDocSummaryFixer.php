@@ -6,7 +6,6 @@ use ArtARTs36\PhpCsFixerGoodFixers\Doc\DocBlock;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -79,24 +78,6 @@ class InterfaceMethodPhpDocSummaryFixer extends AbstractFixer
             [],
             'Each interface method must have a description (PHPDoc Summary)'
         );
-    }
-
-    public function getName(): string
-    {
-        /** @var string $name */
-        $name = Preg::replace('/(?<!^)(?=[A-Z])/', '_', \substr(static::class, 22, -5));
-
-        return 'PhpCsFixerGoodFixers/' . \strtolower($name);
-    }
-
-    public function getPriority(): int
-    {
-        return 2;
-    }
-
-    public function supports(\SplFileInfo $file): bool
-    {
-        return true;
     }
 
     protected function generateComment(string $methodName, \SplFileInfo $file): string
