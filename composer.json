@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "php": "^7.2 | ^8.0",
-        "friendsofphp/php-cs-fixer": "^3.3",
+        "friendsofphp/php-cs-fixer": "^3",
         "artarts36/str": "^2.0.4"
     },
     "require-dev": {
