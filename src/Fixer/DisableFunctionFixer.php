@@ -40,7 +40,11 @@ class DisableFunctionFixer extends AbstractFixer implements ConfigurableFixerInt
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        return new FixerDefinition('', [], '');
+        return new FixerDefinition(
+            'Check the use of disabled functions',
+            [],
+            'Check the use of disabled functions'
+        );
     }
 
     public function isCandidate(Tokens $tokens): bool

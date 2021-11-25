@@ -25,4 +25,15 @@ final class DisableFunctionFixerTest extends TestCase
     {
         $this->runFixerFixTest(new DisableFunctionFixer(), $inputPath, $expectedFilePath);
     }
+
+    /**
+     * @covers \ArtARTs36\PhpCsFixerGoodFixers\Fixer\DisableFunctionFixer::getName
+     */
+    public function testGetName(): void
+    {
+        self::assertEquals(
+            'PhpCsFixerGoodFixers/disable_function',
+            (new DisableFunctionFixer())->getName()
+        );
+    }
 }
