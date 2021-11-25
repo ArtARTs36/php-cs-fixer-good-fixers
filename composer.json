@@ -25,5 +25,10 @@
             "name": "ArtARTs36",
             "email": "temicska99@mail.ru"
         }
-    ]
+    ],
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit -v --coverage-text --colors=always --configuration phpunit.xml"
+        ]
+    }
 }
