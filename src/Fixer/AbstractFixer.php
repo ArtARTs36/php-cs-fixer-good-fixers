@@ -2,6 +2,7 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
+use ArtARTs36\PhpCsFixerGoodFixers\Token\TokenHelper;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Tokenizer\Token;
@@ -10,6 +11,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractFixer implements FixerInterface
 {
     private $name;
+
+    protected $helper;
 
     public function __construct()
     {
@@ -20,6 +23,8 @@ abstract class AbstractFixer implements FixerInterface
                 ->splitByDifferentCases()
                 ->implode('_')
                 ->toLower();
+
+        $this->helper = new TokenHelper();
     }
 
     public function isRisky(): bool
@@ -40,26 +45,5 @@ abstract class AbstractFixer implements FixerInterface
     public function supports(\SplFileInfo $file): bool
     {
         return true;
-    }
-
-    protected function getFirstIndex(Tokens $tokens): int
-    {
-        foreach ($tokens as $index => $token) {
-            return $index;
-        }
-
-        return 0;
-    }
-
-    protected function getClassName(Tokens $tokens): ?string
-    {
-        $classTokenIndex = $tokens->getNextTokenOfKind($this->getFirstIndex($tokens), [[T_CLASS]]);
-
-        return $tokens[$tokens->getNextTokenOfKind($classTokenIndex, [[T_STRING]])]->getContent();
-    }
-
-    protected function tokenIsNull(Token $token): bool
-    {
-        return $token->getContent() === 'null';
     }
 }
