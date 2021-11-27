@@ -4,7 +4,6 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
 use ArtARTs36\Str\Str;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;

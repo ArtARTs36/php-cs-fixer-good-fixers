@@ -11,16 +11,16 @@ final class LaravelCommandNoEmptyDescriptionFixerTest extends TestCase
     {
         return [
             [
-                __DIR__ . '/../resources/laravel_command_no_empty_description/01/input.php',
-                __DIR__ . '/../resources/laravel_command_no_empty_description/01/expected.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/01.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/expected.php',
             ],
             [
-                __DIR__ . '/../resources/laravel_command_no_empty_description/02/input.php',
-                __DIR__ . '/../resources/laravel_command_no_empty_description/02/expected.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/02.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/expected.php',
             ],
             [
-                __DIR__ . '/../resources/laravel_command_no_empty_description/03/input.php',
-                __DIR__ . '/../resources/laravel_command_no_empty_description/03/expected.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/03.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/expected.php',
             ],
         ];
     }
