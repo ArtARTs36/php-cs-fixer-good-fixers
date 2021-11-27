@@ -25,6 +25,43 @@ class TokenHelper
 
     public function isNull(Token $token): bool
     {
-        return $token->getContent() === null;
+        return $token->getContent() === 'null';
+    }
+
+    /**
+     * @param Tokens&iterable<Token> $tokens
+     */
+    public function getNextTokenId(
+        Tokens $tokens,
+        int $fromIndex,
+        int $maxLength,
+        ?int $searchToken,
+        ?string $searchValue = null
+    ): ?int {
+        for ($i = $fromIndex + 1; $i < ($fromIndex + $maxLength + 1); $i++) {
+            if ($tokens[$i]->getId() === $searchToken) {
+                if ($searchValue === null) {
+                    return $i;
+                }
+
+                if ($tokens[$i]->getContent() === $searchValue) {
+                    return $i;
+                }
+
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    public function getNextAssignTokenId(Tokens $tokens, int $fromIndex, int $maxLength): ?int
+    {
+        return $this->getNextTokenId($tokens, $fromIndex, $maxLength, null, '=');
+    }
+
+    public function getNextNullOrEmptyStringTokenId(Tokens $tokens, int $fromIndex, int $maxLength)
+    {
+
     }
 }
