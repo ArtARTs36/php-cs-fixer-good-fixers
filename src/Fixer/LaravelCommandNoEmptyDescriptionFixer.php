@@ -4,8 +4,10 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
 use ArtARTs36\Str\Str;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
 {
@@ -22,51 +24,34 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
      */
     public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $hasProperty = false;
-        $descriptionValueTokensIds = [];
-        $className = '';
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = 0; $index < $tokens->count(); $index++) {
-            $token = $tokens[$index];
+        $classElements = $tokensAnalyzer->getClassyElements();
 
-            if ($token->isGivenKind(T_CLASS)) {
-                $className = $tokens[$tokens->getNextTokenOfKind($index, [[T_STRING]])]->getContent();
-            }
+        $neededDescription = $this->generateDescription($this->getClassName($tokens));
 
-            if ($token->isGivenKind(T_VARIABLE) && $token->getContent() === '$description') {
-                $assignTokenId = $tokens->getNextTokenOfKind($index, ['=']);
-                $valueTokenId = $assignTokenId + 1;
-                $hasProperty = true;
-
-                if ($tokens[$valueTokenId]->isGivenKind(T_WHITESPACE)) {
-                    $valueTokenId++;
+        foreach ($classElements as $index => $element) {
+            if ($element['type'] === 'property' && $element['token']->getContent() === '$description') {
+                if ($tokens[$index + 1]->isGivenKind(T_WHITESPACE) &&
+                    $tokens[$index + 2]->getContent() === '='
+                ) {
+                    if ($tokens[$index + 3]->isGivenKind(T_WHITESPACE) &&
+                        $tokens[$index + 4]->getId() === T_CONSTANT_ENCAPSED_STRING &&
+                        ($tokens[$index + 4]->getContent() === "''" ||
+                            mb_strlen(trim($tokens[$index + 4]->getContent())) === 0
+                        )
+                    ) {
+                        $tokens[$index + 4] = new Token([T_CONSTANT_ENCAPSED_STRING, "'$neededDescription'"]);
+                    }
                 }
 
-                $closeTokenId = $tokens->getNextTokenOfKind($valueTokenId, [';']);
-                $newDescription = '';
-
-                for ($i = $valueTokenId; $i < $closeTokenId; $i++) {
-                    $descriptionValueTokensIds[] = $i;
-                    $newDescription .= $tokens[$i]->getContent();
-                }
-
-                break;
-            }
-        }
-
-        $neededDescription = Str::make($className)
-            ->deleteWhenEnds('Command')
-            ->splitByDifferentCases()
-            ->implode(' ')
-            ->toLower()
-            ->upFirstSymbol();
-
-        if ($hasProperty) {
-            if (count($descriptionValueTokensIds) === 1) {
-                [$valueTokenId] = $descriptionValueTokensIds;
-
-                if ($tokens[$valueTokenId]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
-                    $tokens[$valueTokenId] = new Token([T_CONSTANT_ENCAPSED_STRING, "'$neededDescription'"]);
+                if ($tokens[$index + 1]->getContent() === ';') {
+                    $tokens->insertAt($index + 1,[
+                        new Token([T_WHITESPACE, ' ']),
+                        new Token([T_STRING, '=']),
+                        new Token([T_WHITESPACE, ' ']),
+                        new Token([T_CONSTANT_ENCAPSED_STRING, "'$neededDescription'"]),
+                    ]);
                 }
             }
         }
@@ -75,5 +60,15 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         // TODO: Implement getDefinition() method.
+    }
+
+    protected function generateDescription(string $className): string
+    {
+        return Str::make($className)
+            ->deleteWhenEnds('Command')
+            ->splitByDifferentCases()
+            ->implode(' ')
+            ->toLower()
+            ->upFirstSymbol();
     }
 }
