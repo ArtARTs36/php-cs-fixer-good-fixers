@@ -2,12 +2,15 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
+use ArtARTs36\PhpCsFixerGoodFixers\Token\TokenHelper;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\Fixer\FixerInterface;
 
 abstract class AbstractFixer implements FixerInterface
 {
     private $name;
+
+    protected $helper;
 
     public function __construct()
     {
@@ -18,6 +21,8 @@ abstract class AbstractFixer implements FixerInterface
                 ->splitByDifferentCases()
                 ->implode('_')
                 ->toLower();
+
+        $this->helper = new TokenHelper();
     }
 
     public function isRisky(): bool
