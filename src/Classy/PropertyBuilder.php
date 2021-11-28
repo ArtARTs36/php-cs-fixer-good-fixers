@@ -6,12 +6,15 @@ use PhpCsFixer\Tokenizer\Token;
 
 class PropertyBuilder
 {
+    /** @var array<Token> */
     protected $tokens = [];
 
     protected $name;
 
+    /** @var Token */
     protected $visible;
 
+    /** @var array<Token> */
     protected $value = [];
 
     public function __construct(string $name)
