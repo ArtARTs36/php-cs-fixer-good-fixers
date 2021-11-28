@@ -4,7 +4,7 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Classy;
 
 use PhpCsFixer\Tokenizer\Token;
 
-class PropBuilder
+class PropertyBuilder
 {
     protected $tokens = [];
 

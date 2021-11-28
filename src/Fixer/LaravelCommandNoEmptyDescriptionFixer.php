@@ -2,7 +2,7 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
-use ArtARTs36\PhpCsFixerGoodFixers\Classy\PropBuilder;
+use ArtARTs36\PhpCsFixerGoodFixers\Classy\PropertyBuilder;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
@@ -87,7 +87,7 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
             $insertIndex = $tokens->getNextTokenOfKind($classTokenIndex, ['{']) + 1;
         }
 
-        $propBuilder = new PropBuilder('description');
+        $propBuilder = new PropertyBuilder('description');
 
         $tokens->insertAt(
             $insertIndex,
