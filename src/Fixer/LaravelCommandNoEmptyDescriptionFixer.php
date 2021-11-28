@@ -2,6 +2,7 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
+use ArtARTs36\PhpCsFixerGoodFixers\Property\PropBuilder;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
@@ -29,6 +30,8 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
 
         $neededDescription = $this->generateDescription($this->helper->getClassName($tokens));
 
+        $signatureLineLastTokenIndex = null;
+
         foreach ($classElements as $index => $element) {
             if ($element['type'] === 'property' && $element['token']->getContent() === '$description') {
                 if (($assignTokenIndex = $this->helper->getNextAssignTokenId($tokens, $index, 2))) {
@@ -55,7 +58,28 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
                     return;
                 }
             }
+
+            if ($element['type'] === 'property' && $element['token']->getContent() === '$signature') {
+                $signatureLineLastTokenIndex = $tokens->getNextTokenOfKind($index, [';']);
+            }
         }
+
+        $insertIndex = $signatureLineLastTokenIndex;
+
+        if ($insertIndex === null) {
+            $classTokenIndex = $tokens->getNextTokenOfKind($this->helper->getFirstIndex($tokens), [[T_CLASS]]);
+            $insertIndex = $tokens->getNextTokenOfKind($classTokenIndex, ['{']) + 1;
+        }
+
+        $propBuilder = new PropBuilder('description');
+
+        $tokens->insertAt(
+            $insertIndex,
+            array_merge(
+                [new Token([T_WHITESPACE, "\n"])],
+                $propBuilder->setProtected()->setValueString($neededDescription)->buildLine()
+            ),
+        );
     }
 
     public function getDefinition(): FixerDefinitionInterface

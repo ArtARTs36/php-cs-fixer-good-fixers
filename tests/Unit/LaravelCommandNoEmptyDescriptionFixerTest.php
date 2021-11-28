@@ -26,6 +26,10 @@ final class LaravelCommandNoEmptyDescriptionFixerTest extends TestCase
                 __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/04.php',
                 __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/04_expected.php',
             ],
+            [
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/05.php',
+                __DIR__ . '/../resources/laravel_command_no_empty_description/test_fix/expected.php',
+            ],
         ];
     }
 
