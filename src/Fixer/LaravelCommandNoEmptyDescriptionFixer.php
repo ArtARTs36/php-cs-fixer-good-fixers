@@ -32,11 +32,13 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
         foreach ($classElements as $index => $element) {
             if ($element['type'] === 'property' && $element['token']->getContent() === '$description') {
                 if (($assignTokenIndex = $this->helper->getNextAssignTokenId($tokens, $index, 2))) {
-                    if ($tokens[$assignTokenIndex + 1]->isGivenKind(T_WHITESPACE) &&
-                        ($this->helper->isNull($tokens[$assignTokenIndex + 2]) ||
-                        mb_strlen(trim($tokens[$assignTokenIndex + 2]->getContent(), "'")) === 0)
-                    ) {
-                        $tokens[$assignTokenIndex + 2] = new Token([T_CONSTANT_ENCAPSED_STRING, "'$neededDescription'"]);
+                    $valueTokenIndex = $this->helper->getNextTokenId($tokens, $assignTokenIndex, 3, null, [
+                        'null',
+                        "''",
+                    ]);
+
+                    if ($valueTokenIndex !== null) {
+                        $tokens[$valueTokenIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "'$neededDescription'"]);
                     }
                 }
 

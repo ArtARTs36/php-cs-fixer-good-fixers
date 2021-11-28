@@ -30,21 +30,28 @@ class TokenHelper
 
     /**
      * @param Tokens&iterable<Token> $tokens
+     * @param array<string>|string $searchValue
      */
     public function getNextTokenId(
         Tokens $tokens,
         int $fromIndex,
         int $maxLength,
         ?int $searchToken,
-        ?string $searchValue = null
+        $searchValue = null
     ): ?int {
         for ($i = $fromIndex + 1; $i < ($fromIndex + $maxLength + 1); $i++) {
+            $valueEquals = in_array($tokens[$i]->getContent(), (array) $searchValue);
+
+            if ($searchToken === null && $valueEquals) {
+                return $i;
+            }
+
             if ($tokens[$i]->getId() === $searchToken) {
                 if ($searchValue === null) {
                     return $i;
                 }
 
-                if ($tokens[$i]->getContent() === $searchValue) {
+                if ($valueEquals) {
                     return $i;
                 }
 
