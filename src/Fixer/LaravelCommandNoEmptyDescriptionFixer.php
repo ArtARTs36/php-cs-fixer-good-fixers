@@ -4,6 +4,8 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
 use ArtARTs36\PhpCsFixerGoodFixers\Classy\PropertyBuilder;
 use ArtARTs36\Str\Str;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -71,7 +73,17 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        // TODO: Implement getDefinition() method.
+        return new FixerDefinition('Laravel console commands with filled descriptions', [
+            new CodeSample("<?php
+
+use Illuminate\Console\Command;
+
+class RestartQueueCommand extends Command
+{
+    protected \$description = '';
+}
+"),
+        ]);
     }
 
     protected function insertNewDescriptionProperty(
