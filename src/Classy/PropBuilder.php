@@ -1,6 +1,6 @@
 <?php
 
-namespace ArtARTs36\PhpCsFixerGoodFixers\Property;
+namespace ArtARTs36\PhpCsFixerGoodFixers\Classy;
 
 use PhpCsFixer\Tokenizer\Token;
 

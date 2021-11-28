@@ -2,7 +2,7 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 
-use ArtARTs36\PhpCsFixerGoodFixers\Property\PropBuilder;
+use ArtARTs36\PhpCsFixerGoodFixers\Classy\PropBuilder;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
@@ -64,6 +64,19 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
             }
         }
 
+        $this->insertNewDescriptionProperty($tokens, $neededDescription, $signatureLineLastTokenIndex);
+    }
+
+    public function getDefinition(): FixerDefinitionInterface
+    {
+        // TODO: Implement getDefinition() method.
+    }
+
+    protected function insertNewDescriptionProperty(
+        Tokens $tokens,
+        string $description,
+        ?int $signatureLineLastTokenIndex
+    ): void {
         $whiteSpaces = [$this->helper->createNewLineToken()];
         $insertIndex = null;
 
@@ -83,14 +96,9 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
             $insertIndex,
             array_merge(
                 $whiteSpaces,
-                $propBuilder->setProtected()->setValueString($neededDescription)->buildLine()
+                $propBuilder->setProtected()->setValueString($description)->buildLine()
             ),
         );
-    }
-
-    public function getDefinition(): FixerDefinitionInterface
-    {
-        // TODO: Implement getDefinition() method.
     }
 
     protected function generateDescription(string $className): string
