@@ -28,9 +28,12 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
         $neededDescription = $this->generateDescription($this->helper->getClassName($tokens));
 
         $signatureLineLastTokenIndex = null;
+        $hasDescriptionProperty = false;
 
         foreach ($classElements as $index => $element) {
             if ($element['type'] === 'property' && $element['token']->getContent() === '$description') {
+                $hasDescriptionProperty = true;
+
                 if (($assignTokenIndex = $this->helper->getNextAssignTokenId($tokens, $index, 2))) {
                     $valueTokenIndex = $this->helper->getNextTokenId($tokens, $assignTokenIndex, 3, null, [
                         'null',
@@ -61,7 +64,9 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
             }
         }
 
-        $this->insertNewDescriptionProperty($tokens, $neededDescription, $signatureLineLastTokenIndex);
+        if (! $hasDescriptionProperty) {
+            $this->insertNewDescriptionProperty($tokens, $neededDescription, $signatureLineLastTokenIndex);
+        }
     }
 
     public function getDefinition(): FixerDefinitionInterface
