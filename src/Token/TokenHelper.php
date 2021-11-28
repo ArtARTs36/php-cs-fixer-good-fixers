@@ -67,8 +67,8 @@ class TokenHelper
         return $this->getNextTokenId($tokens, $fromIndex, $maxLength, null, '=');
     }
 
-    public function getNextNullOrEmptyStringTokenId(Tokens $tokens, int $fromIndex, int $maxLength)
+    public function createNewLineToken(): Token
     {
-
+        return new Token([T_WHITESPACE, "\n"]);
     }
 }

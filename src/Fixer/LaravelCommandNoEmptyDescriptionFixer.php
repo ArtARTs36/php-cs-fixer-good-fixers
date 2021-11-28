@@ -64,7 +64,13 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
             }
         }
 
-        $insertIndex = $signatureLineLastTokenIndex;
+        $whiteSpaces = [$this->helper->createNewLineToken()];
+        $insertIndex = null;
+
+        if ($signatureLineLastTokenIndex) {
+            $insertIndex = $signatureLineLastTokenIndex + 1;
+            $whiteSpaces[] = $this->helper->createNewLineToken();
+        }
 
         if ($insertIndex === null) {
             $classTokenIndex = $tokens->getNextTokenOfKind($this->helper->getFirstIndex($tokens), [[T_CLASS]]);
@@ -76,7 +82,7 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
         $tokens->insertAt(
             $insertIndex,
             array_merge(
-                [new Token([T_WHITESPACE, "\n"])],
+                $whiteSpaces,
                 $propBuilder->setProtected()->setValueString($neededDescription)->buildLine()
             ),
         );
