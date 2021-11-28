@@ -5,8 +5,6 @@ namespace ArtARTs36\PhpCsFixerGoodFixers\Fixer;
 use ArtARTs36\PhpCsFixerGoodFixers\Token\TokenHelper;
 use ArtARTs36\Str\Str;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 abstract class AbstractFixer implements FixerInterface
 {

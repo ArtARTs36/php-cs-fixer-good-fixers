@@ -13,10 +13,7 @@ class LaravelCommandNoEmptyDescriptionFixer extends AbstractFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_CLASS) &&
-               $tokens->isTokenKindFound(T_EXTENDS) &&
-               $tokens->isTokenKindFound(T_PROTECTED) &&
-               $tokens->isTokenKindFound(T_VARIABLE);
+        return $this->helper->isClassExtends($tokens, 'Illuminate\Console\Command');
     }
 
     /**
