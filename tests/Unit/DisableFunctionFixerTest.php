@@ -14,6 +14,10 @@ final class DisableFunctionFixerTest extends TestCase
                 __DIR__ . '/../resources/disable_function/01/input.php',
                 __DIR__ . '/../resources/disable_function/01/expected.php',
             ],
+            [
+                __DIR__ . '/../resources/disable_function/02/input.php',
+                __DIR__ . '/../resources/disable_function/02/expected.php',
+            ],
         ];
     }
 
