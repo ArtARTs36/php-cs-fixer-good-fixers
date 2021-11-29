@@ -2,6 +2,8 @@
 
 namespace ArtARTs36\PhpCsFixerGoodFixers\Doc;
 
+use PhpCsFixer\Tokenizer\Token;
+
 class DocBlock
 {
     private $content;
@@ -21,6 +23,11 @@ class DocBlock
         if (! str_starts_with($summary, '@') && mb_strlen($summary) > 1) {
             $this->summary = $summary;
         }
+    }
+
+    public static function fromToken(Token $token): self
+    {
+        return new self($token->getContent());
     }
 
     /**
