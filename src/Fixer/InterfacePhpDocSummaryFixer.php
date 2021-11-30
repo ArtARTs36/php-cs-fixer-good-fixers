@@ -62,6 +62,7 @@ class InterfacePhpDocSummaryFixer extends AbstractFixer
         return Str::make($className)
             ->deleteWhenEnds('Interface')
             ->upFirstSymbol()
-            ->prepend('Interface for ');
+            ->prepend('Interface for ')
+            ->append('.');
     }
 }

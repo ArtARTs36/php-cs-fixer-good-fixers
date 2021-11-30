@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Interface for User
+ * Interface for User.
  * @package Some\Package
  */
 interface UserInterface
