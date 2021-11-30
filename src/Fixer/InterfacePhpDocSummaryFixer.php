@@ -44,18 +44,16 @@ class InterfacePhpDocSummaryFixer extends AbstractFixer
 
             $tokens->insertAt($interfaceTokenIndex, [$docBlock->toToken(), $this->helper->createNewLineToken()]);
         }
-
-        $docBlock->setSummary('Test class');
     }
 
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Each interface method must have a description (PHPDoc Summary)',
+            'Each interface must have a description (PHPDoc Summary)',
             [
-                new CodeSample("<?php\ninterface User\n{\npublic function getName();\n}"),
+                new CodeSample("<?php\ninterface User\n{}"),
             ],
-            'Each interface method must have a description (PHPDoc Summary)'
+            'Each interface must have a description (PHPDoc Summary)'
         );
     }
 
