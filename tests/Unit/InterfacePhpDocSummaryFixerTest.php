@@ -13,6 +13,9 @@ final class InterfacePhpDocSummaryFixerTest extends TestCase
             [
                 __DIR__ . '/../resources/interface_php_doc_summary/01/input.php',
                 __DIR__ . '/../resources/interface_php_doc_summary/01/expected.php',
+            ],            [
+                __DIR__ . '/../resources/interface_php_doc_summary/02/input.php',
+                __DIR__ . '/../resources/interface_php_doc_summary/02/expected.php',
             ],
         ];
     }

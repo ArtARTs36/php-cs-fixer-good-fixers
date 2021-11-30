@@ -6,6 +6,5 @@ try {
     if ($e->getLine() > 1) {
         echo $e;
     } else {
-        dd($e);
     }
 }

@@ -13,9 +13,12 @@ class DocBlock
     /** @var string|null */
     private $summary;
 
-    public function __construct(string $content)
+    private $withSpaces;
+
+    public function __construct(string $content, bool $withSpaces = true)
     {
         $this->content = $content;
+        $this->withSpaces = $withSpaces;
         $this->lines = explode("\n", $this->content);
 
         $summary = trim($this->lines[1], "/*\n ");
@@ -30,6 +33,19 @@ class DocBlock
         return new self($token->getContent());
     }
 
+    public static function fromTokenForClass(Token $token): self
+    {
+        return new self($token->getContent(), false);
+    }
+
+    public function toToken(): Token
+    {
+        return new Token([
+            T_DOC_COMMENT,
+            $this->content(),
+        ]);
+    }
+
     /**
      * @param array<string>|string $lines
      */
@@ -42,6 +58,20 @@ class DocBlock
         }
 
         return new self("    /**" . $linesString . "\n     */");
+    }
+
+    /**
+     * @param array<string>|string $lines
+     */
+    public static function makeWithoutSpaces($lines = []): self
+    {
+        $linesString = '';
+
+        foreach ((array) $lines as $line) {
+            $linesString .= "\n * " . $line;
+        }
+
+        return new self("/**" . $linesString . "\n */", false);
     }
 
     public function setSummary(string $summary): self
@@ -94,6 +124,6 @@ class DocBlock
 
     private function wrapLine(string $line): string
     {
-        return '     ' . '* ' . $line;
+        return ($this->withSpaces ? '     ' : ' ') . '* ' . $line;
     }
 }

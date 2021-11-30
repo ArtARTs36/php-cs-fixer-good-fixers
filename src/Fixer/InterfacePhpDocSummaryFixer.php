@@ -24,15 +24,25 @@ class InterfacePhpDocSummaryFixer extends AbstractFixer
     {
         $interfaceTokenIndex = $tokens->getNextTokenOfKind($this->helper->getFirstIndex($tokens), [[T_INTERFACE]]);
         $docBlockIndex = $tokens->getPrevTokenOfKind($interfaceTokenIndex, [[T_DOC_COMMENT]]);
+        $nameTokenIndex = $tokens->getNextTokenOfKind($interfaceTokenIndex, [[T_STRING]]);
+        $name = $tokens[$nameTokenIndex]->getContent();
 
         if ($docBlockIndex !== null) {
-            $docBlock = DocBlock::fromToken($tokens[$docBlockIndex]);
+            $docBlock = DocBlock::fromTokenForClass($tokens[$docBlockIndex]);
 
             if ($docBlock->hasSummary()) {
                 return;
             }
+
+            $docBlock->setSummary($this->generateComment($name));
+
+            $tokens[$docBlockIndex] = $docBlock->toToken();
         } else {
-            $docBlock = DocBlock::make();
+            $docBlock = DocBlock::makeWithoutSpaces();
+
+            $docBlock->setSummary($this->generateComment($name));
+
+            $tokens->insertAt($interfaceTokenIndex, [$docBlock->toToken(), $this->helper->createNewLineToken()]);
         }
 
         $docBlock->setSummary('Test class');
@@ -47,5 +57,13 @@ class InterfacePhpDocSummaryFixer extends AbstractFixer
             ],
             'Each interface method must have a description (PHPDoc Summary)'
         );
+    }
+
+    protected function generateComment(string $className): string
+    {
+        return Str::make($className)
+            ->deleteWhenEnds('Interface')
+            ->upFirstSymbol()
+            ->prepend('Interface for ');
     }
 }
