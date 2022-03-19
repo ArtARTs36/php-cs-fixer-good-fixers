@@ -1,5 +1,7 @@
 # Good Fixers for PHP CS Fixer
 
+This is Fixers collection for PHP Cs Fixer
+
 ## Fixers
 
 | Fixer   | Description  | Config |
